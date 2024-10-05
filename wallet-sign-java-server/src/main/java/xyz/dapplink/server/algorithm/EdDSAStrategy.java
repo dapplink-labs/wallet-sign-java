@@ -5,7 +5,12 @@ import org.springframework.stereotype.Component;
 import xyz.dapplink.server.algorithm.dto.PairEntity;
 import xyz.dapplink.server.enums.SignType;
 
-import java.security.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.EdECPrivateKey;
+import java.security.interfaces.EdECPublicKey;
 import java.util.Base64;
 
 @Component

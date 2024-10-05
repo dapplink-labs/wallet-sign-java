@@ -1,13 +1,21 @@
 package xyz.dapplink.server.algorithm;
 
+
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
+
 import org.springframework.stereotype.Component;
 import xyz.dapplink.server.algorithm.dto.PairEntity;
 import xyz.dapplink.server.enums.SignType;
 
-import java.security.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.spec.ECGenParameterSpec;
 import java.util.Base64;
 
 @Component
@@ -29,8 +37,8 @@ public class EcDSAStrategy implements AlgorithmStrategy {
         keyGen.initialize(secp256k1);
         KeyPair keyPair = keyGen.generateKeyPair();
         return new PairEntity()
-                .setPublicKey(Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()))
-                .setPrivateKey(Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded()));
+                .setPublicKey(Base64.getEncoder().encodeToString(ecPublicKey.getEncoded()))
+                .setPrivateKey(Base64.getEncoder().encodeToString(ecPrivateKey.getEncoded()));
     }
 
     @Override
