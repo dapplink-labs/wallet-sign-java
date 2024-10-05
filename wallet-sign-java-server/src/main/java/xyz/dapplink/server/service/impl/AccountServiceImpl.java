@@ -43,7 +43,7 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public String sign(String publicKey, String msg) {
-        List<Account> accounts = accountRepository.findAccountByPublicKeyEndsWithIgnoreCase(publicKey);
+        List<Account> accounts = accountRepository.findAccountByPublicKey(publicKey);
         Assert.isTrue(!accounts.isEmpty(), "无效公钥");
         return "";
     }

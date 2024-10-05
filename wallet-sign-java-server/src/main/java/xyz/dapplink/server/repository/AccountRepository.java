@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface AccountRepository extends CrudRepository<Account, Long> {
 
-    List<Account> findAccountByPublicKeyEndsWithIgnoreCase(String publicKey);
+    List<Account> findAccountByPublicKey(String publicKey);
 
 }
