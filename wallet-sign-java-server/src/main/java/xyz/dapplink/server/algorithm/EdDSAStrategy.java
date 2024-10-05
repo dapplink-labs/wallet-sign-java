@@ -1,5 +1,6 @@
 package xyz.dapplink.server.algorithm;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.stereotype.Component;
 import xyz.dapplink.server.algorithm.dto.PairEntity;
 import xyz.dapplink.server.enums.SignType;
@@ -23,14 +24,15 @@ public class EdDSAStrategy implements AlgorithmStrategy {
     }
 
     @Override
-    public PairEntity generateKeygen() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EdDSA");
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        EdECPublicKey edPublicKey = (EdECPublicKey) keyPair.getPublic();
-        EdECPrivateKey edPrivateKey = (EdECPrivateKey) keyPair.getPrivate();
+    public PairEntity generateKeygen() throws Exception{
+        Security.addProvider(new BouncyCastleProvider());
+
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("EdDSA", "BC");
+        keyGen.initialize(0);
+        KeyPair keyPair = keyGen.generateKeyPair();
         return new PairEntity()
-                .setPublicKey(Base64.getEncoder().encodeToString(edPublicKey.getEncoded()))
-                .setPrivateKey(Base64.getEncoder().encodeToString(edPrivateKey.getEncoded()));
+                .setPublicKey(Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()))
+                .setPrivateKey(Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded()));
     }
 
     @Override
