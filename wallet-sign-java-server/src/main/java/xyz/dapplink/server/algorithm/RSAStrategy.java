@@ -35,4 +35,9 @@ public class RSAStrategy implements AlgorithmStrategy {
                 .setPrivateKey(Base64.getEncoder().encodeToString(rsaPrivateKey.getEncoded()));
 
     }
+
+    @Override
+    public String sign(String publicKey, String msg) {
+        return "";
+    }
 }

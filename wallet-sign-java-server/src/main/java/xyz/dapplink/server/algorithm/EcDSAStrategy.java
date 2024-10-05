@@ -36,4 +36,9 @@ public class EcDSAStrategy implements AlgorithmStrategy {
                 .setPublicKey(Base64.getEncoder().encodeToString(ecPublicKey.getEncoded()))
                 .setPrivateKey(Base64.getEncoder().encodeToString(ecPrivateKey.getEncoded()));
     }
+
+    @Override
+    public String sign(String publicKey, String msg) {
+        return "";
+    }
 }

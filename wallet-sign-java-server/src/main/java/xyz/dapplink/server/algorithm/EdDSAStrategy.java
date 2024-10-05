@@ -32,4 +32,9 @@ public class EdDSAStrategy implements AlgorithmStrategy {
                 .setPublicKey(Base64.getEncoder().encodeToString(edPublicKey.getEncoded()))
                 .setPrivateKey(Base64.getEncoder().encodeToString(edPrivateKey.getEncoded()));
     }
+
+    @Override
+    public String sign(String publicKey, String msg) {
+        return "";
+    }
 }

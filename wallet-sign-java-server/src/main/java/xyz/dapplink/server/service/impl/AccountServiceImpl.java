@@ -26,25 +26,25 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public List<String> generateKeyGen(int number, SignType signType) {
         List<String> result = new LinkedList<>();
-        PairEntity pair;
-        try {
-            pair = algorithmService.getStrategy(signType).generateKeygen();
-            accountRepository.save(new Account()
-                    .setPublicKey(pair.getPublicKey())
-                    .setPrivateKey(pair.getPrivateKey())
-                    .setCryptoMethod(signType.getName())
-            );
-            result.add(pair.getPublicKey());
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        List<Account> accountList = new LinkedList<>();
+        for (int i = 0; i < number; i++) {
+            PairEntity pair;
+            try {
+                pair = algorithmService.getStrategy(signType).generateKeygen();
+                accountList.add(new Account().setPublicKey(pair.getPublicKey()).setPrivateKey(pair.getPrivateKey()).setCryptoMethod(signType.getName()));
+                result.add(pair.getPublicKey());
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
         }
+        accountRepository.saveAll(accountList);
         return result;
     }
 
     @Override
     public String sign(String publicKey, String msg) {
         List<Account> accounts = accountRepository.findAccountByPublicKey(publicKey);
-        Assert.isTrue(!accounts.isEmpty(), "无效公钥");
-        return "";
+        Assert.isTrue(accounts.size() == 1, "无效公钥");
+        return algorithmService.getStrategy(SignType.valueOf(accounts.get(0).getCryptoMethod())).sign(publicKey, msg);
     }
 }

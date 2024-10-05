@@ -22,4 +22,9 @@ public class SchnorStrategy implements AlgorithmStrategy {
     public PairEntity generateKeygen() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         return null;
     }
+
+    @Override
+    public String sign(String publicKey, String msg) {
+        return "";
+    }
 }
