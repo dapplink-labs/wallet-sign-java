@@ -18,7 +18,7 @@ public class Account extends BaseEntity {
 
     private String address;
 
-    private String cryptoMethod = "AES";
+    private String cryptoMethod;
 
 }
 

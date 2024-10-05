@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "xyz.dapplink.iface.lib";
+option java_outer_classname = "AccountProto";
+
+service Account {
+
+  rpc GenerateKeygen(GenerateKeygenRequest) returns (GenerateKeygenResponse){
+
+  }
+
+  rpc GenerateSignature(GenerateSignatureRequest) returns (GenerateSignatureResponse){
+
+  }
+}
+
+message GenerateKeygenRequest {
+  uint32 number = 1;
+  string method = 2;
+}
+
+message GenerateKeygenResponse {
+  repeated string publicKeyList = 1;
+}
+
+message GenerateSignatureRequest{
+  string publicKey = 1;
+}
+
+message GenerateSignatureResponse{
+  string signature = 1;
+}
