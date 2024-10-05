@@ -8,6 +8,6 @@ public interface IAccountService {
 
     List<String> generateKeyGen(int number, SignType signType);
 
-    String sign(String publicKey);
+    String sign(String publicKey, String msg);
 
 }

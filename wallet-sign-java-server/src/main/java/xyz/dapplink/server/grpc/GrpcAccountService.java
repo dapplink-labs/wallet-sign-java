@@ -5,6 +5,7 @@ import io.grpc.stub.StreamObserver;
 import lombok.AllArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import xyz.dapplink.iface.lib.*;
 import xyz.dapplink.server.enums.SignType;
 import xyz.dapplink.server.service.IAccountService;
@@ -33,6 +34,12 @@ public class GrpcAccountService extends AccountGrpc.AccountImplBase {
 
     @Override
     public void generateSignature(GenerateSignatureRequest request, StreamObserver<GenerateSignatureResponse> responseObserver) {
+        Assert.isTrue(StringUtils.hasLength(request.getPublicKey()), "无效公钥");
+        Assert.isTrue(StringUtils.hasLength(request.getMsg()), "无效MSG");
+        String signature = accountService.sign(request.getPublicKey(), request.getMsg());
+        GenerateSignatureResponse response = GenerateSignatureResponse.newBuilder().setSignature(signature).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }
 

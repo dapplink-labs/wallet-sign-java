@@ -3,6 +3,7 @@ package xyz.dapplink.server.service;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import xyz.dapplink.server.algorithm.AlgorithmStrategy;
+import xyz.dapplink.server.enums.SignType;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ public class AlgorithmService {
         });
     }
 
-
+    public AlgorithmStrategy getStrategy(SignType signType){
+        return strategyMap.get(signType.getName());
+    }
 
 }

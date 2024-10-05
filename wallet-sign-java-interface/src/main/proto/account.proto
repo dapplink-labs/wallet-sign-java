@@ -26,6 +26,7 @@ message GenerateKeygenResponse {
 
 message GenerateSignatureRequest{
   string publicKey = 1;
+  string msg = 2;
 }
 
 message GenerateSignatureResponse{
