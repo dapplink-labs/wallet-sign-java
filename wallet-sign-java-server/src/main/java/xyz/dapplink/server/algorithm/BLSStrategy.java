@@ -12,8 +12,6 @@ import xyz.dapplink.server.enums.SignType;
 
 import java.security.*;
 import java.util.Base64;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
 
 @Component
 public class BLSStrategy implements AlgorithmStrategy{

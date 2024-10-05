@@ -19,7 +19,7 @@ public class SchnorStrategy implements AlgorithmStrategy {
     }
 
     @Override
-    public PairEntity generateKeygen() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+    public PairEntity generateKeygen() throws Exception {
         return null;
     }
 
