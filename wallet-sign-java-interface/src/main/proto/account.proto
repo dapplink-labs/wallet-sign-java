@@ -38,5 +38,5 @@ enum AlgorithmMethod {
   EDDSA = 1;
   BLS = 2;
   RSA = 3;
-  SCHNOR = 4s;
+  SCHNOR = 4;
 }
