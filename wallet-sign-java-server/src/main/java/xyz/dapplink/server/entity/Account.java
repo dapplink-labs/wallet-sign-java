@@ -18,6 +18,7 @@ public class Account extends BaseEntity {
     @Lob
     private String privateKey;
 
+    @Lob
     private String address;
 
     private String cryptoMethod;
