@@ -23,11 +23,7 @@ public class GrpcAccountService extends AccountGrpc.AccountImplBase {
     public void generateKeygen(GenerateKeygenRequest request, StreamObserver<GenerateKeygenResponse> responseObserver) {
         Assert.isTrue(request.getNumber() > 0, "无效集合大小");
         List<String> publicKeyList = accountService.generateKeyGen(request.getNumber(), SignType.valueOf(request.getMethod().name()));
-        GenerateKeygenResponse.Builder builder = GenerateKeygenResponse.newBuilder();
-        for (int i = 0; i < publicKeyList.size(); i++) {
-            builder.setPublicKeyList(i, publicKeyList.get(i));
-        }
-        GenerateKeygenResponse response = builder.build();
+        GenerateKeygenResponse response = GenerateKeygenResponse.newBuilder().addAllPublicKeyList(publicKeyList).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
