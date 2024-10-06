@@ -1,12 +1,16 @@
 package xyz.dapplink.server.algorithm;
 
+import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
+import org.bouncycastle.crypto.generators.Ed25519KeyPairGenerator;
+import org.bouncycastle.crypto.params.Ed25519KeyGenerationParameters;
+import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
+import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.stereotype.Component;
 import xyz.dapplink.server.algorithm.dto.PairEntity;
 import xyz.dapplink.server.enums.SignType;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
+import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Base64;
 
@@ -23,13 +27,14 @@ public class EdDSAStrategy implements AlgorithmStrategy {
     @Override
     public PairEntity generateKeygen() throws Exception{
         Security.addProvider(new BouncyCastleProvider());
-
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("EdDSA", "BC");
-        keyGen.initialize(0);
-        KeyPair keyPair = keyGen.generateKeyPair();
+        Ed25519KeyPairGenerator keyGen = new Ed25519KeyPairGenerator();
+        keyGen.init(new Ed25519KeyGenerationParameters(new SecureRandom()));
+        AsymmetricCipherKeyPair keyPair = keyGen.generateKeyPair();
+        Ed25519PrivateKeyParameters privateKey = (Ed25519PrivateKeyParameters) keyPair.getPrivate();
+        Ed25519PublicKeyParameters publicKey = (Ed25519PublicKeyParameters) keyPair.getPublic();
         return new PairEntity()
-                .setPublicKey(Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()))
-                .setPrivateKey(Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded()));
+                .setPublicKey(Base64.getEncoder().encodeToString(publicKey.getEncoded()))
+                .setPrivateKey(Base64.getEncoder().encodeToString(privateKey.getEncoded()));
     }
 
     @Override
