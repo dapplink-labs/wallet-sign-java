@@ -1,9 +1,7 @@
 package xyz.dapplink.server.algorithm;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
 
-import org.bouncycastle.jce.spec.ECNamedCurveSpec;
 import org.springframework.stereotype.Component;
 import xyz.dapplink.server.algorithm.dto.PairEntity;
 import xyz.dapplink.server.enums.SignType;
@@ -11,7 +9,7 @@ import xyz.dapplink.server.enums.SignType;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.Security;
-import java.security.spec.ECParameterSpec;
+import java.security.spec.ECGenParameterSpec;
 import java.util.Base64;
 
 @Component
@@ -28,15 +26,13 @@ public class EcDSAStrategy implements AlgorithmStrategy {
     @Override
     public PairEntity generateKeygen() throws Exception {
         Security.addProvider(new BouncyCastleProvider());
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("EC", "BC");
-        ECNamedCurveParameterSpec secp256k1 = (ECNamedCurveParameterSpec) org.bouncycastle.jce.provider.BouncyCastleProvider.CONFIGURATION.getEcImplicitlyCa();
-        ECParameterSpec ecSpec = new ECNamedCurveSpec("secp256k1", secp256k1.getCurve(), secp256k1.getG(), secp256k1.getN());
-
-        keyGen.initialize(ecSpec);
-        KeyPair keyPair = keyGen.generateKeyPair();
+        ECGenParameterSpec namedParamSpec = new ECGenParameterSpec("secp256k1");
+        KeyPairGenerator ecKPGen = KeyPairGenerator.getInstance("EC", "BC");
+        ecKPGen.initialize(namedParamSpec);
+        KeyPair ecKP = ecKPGen.generateKeyPair();
         return new PairEntity()
-                .setPublicKey(Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()))
-                .setPrivateKey(Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded()));
+                .setPublicKey(Base64.getEncoder().encodeToString(ecKP.getPublic().getEncoded()))
+                .setPrivateKey(Base64.getEncoder().encodeToString(ecKP.getPrivate().getEncoded()));
     }
 
     @Override
