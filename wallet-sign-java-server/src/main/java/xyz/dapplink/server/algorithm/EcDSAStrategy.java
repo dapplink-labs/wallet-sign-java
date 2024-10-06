@@ -15,6 +15,10 @@ import java.util.Base64;
 @Component
 public class EcDSAStrategy implements AlgorithmStrategy {
 
+    static {
+        Security.addProvider(new BouncyCastleProvider());
+    }
+
     private final String type = SignType.ECDSA.getName();
 
 
@@ -25,7 +29,7 @@ public class EcDSAStrategy implements AlgorithmStrategy {
 
     @Override
     public PairEntity generateKeygen() throws Exception {
-        Security.addProvider(new BouncyCastleProvider());
+
         ECGenParameterSpec namedParamSpec = new ECGenParameterSpec("secp256k1");
         KeyPairGenerator ecKPGen = KeyPairGenerator.getInstance("EC", "BC");
         ecKPGen.initialize(namedParamSpec);
