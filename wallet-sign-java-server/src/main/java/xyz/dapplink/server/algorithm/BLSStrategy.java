@@ -1,7 +1,6 @@
 package xyz.dapplink.server.algorithm;
 
 
-
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.generators.ECKeyPairGenerator;
@@ -19,6 +18,7 @@ import xyz.dapplink.server.enums.SignType;
 
 
 import java.security.*;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
 @Component
@@ -47,11 +47,17 @@ public class BLSStrategy implements AlgorithmStrategy {
         ECPrivateKeyParameters privateKey = (ECPrivateKeyParameters) keyPair.getPrivate();
         return new PairEntity()
                 .setPublicKey(Base64.getEncoder().encodeToString(publicKey.getQ().getEncoded(false)))
-                .setPrivateKey(Base64.getEncoder().encodeToString( BigIntegers.asUnsignedByteArray(privateKey.getD())));
+                .setPrivateKey(Base64.getEncoder().encodeToString(BigIntegers.asUnsignedByteArray(privateKey.getD())));
     }
 
     @Override
-    public String sign(String publicKey, String msg) {
-        return "";
+    public String sign(String privateKey, String msg) throws Exception {
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
+        KeyFactory keyFactory = KeyFactory.getInstance("BLS", "BC");
+        PrivateKey pk = keyFactory.generatePrivate(keySpec);
+        Signature signature = Signature.getInstance("BLS", "BC");
+        signature.initSign(pk);
+        signature.update(msg.getBytes());
+        return Base64.getEncoder().encodeToString(signature.sign());
     }
 }

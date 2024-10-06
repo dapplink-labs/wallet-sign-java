@@ -22,7 +22,7 @@ public class SchnorStrategy implements AlgorithmStrategy {
     }
 
     @Override
-    public String sign(String publicKey, String msg) {
+    public String sign(String privateKey, String msg) {
         return "";
     }
 }

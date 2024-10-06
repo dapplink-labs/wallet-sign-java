@@ -6,10 +6,9 @@ import org.springframework.stereotype.Component;
 import xyz.dapplink.server.algorithm.dto.PairEntity;
 import xyz.dapplink.server.enums.SignType;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.Security;
+import java.security.*;
 import java.security.spec.ECGenParameterSpec;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
 @Component
@@ -29,7 +28,6 @@ public class EcDSAStrategy implements AlgorithmStrategy {
 
     @Override
     public PairEntity generateKeygen() throws Exception {
-
         ECGenParameterSpec namedParamSpec = new ECGenParameterSpec("secp256k1");
         KeyPairGenerator ecKPGen = KeyPairGenerator.getInstance("EC", "BC");
         ecKPGen.initialize(namedParamSpec);
@@ -40,7 +38,13 @@ public class EcDSAStrategy implements AlgorithmStrategy {
     }
 
     @Override
-    public String sign(String publicKey, String msg) {
-        return "";
+    public String sign(String privateKey, String msg) throws Exception {
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
+        KeyFactory keyFactory = KeyFactory.getInstance("EC");
+        PrivateKey pk = keyFactory.generatePrivate(keySpec);
+        Signature signature = Signature.getInstance("SHA256withECDSA");
+        signature.initSign(pk);
+        signature.update(msg.getBytes());
+        return Base64.getEncoder().encodeToString(signature.sign());
     }
 }
