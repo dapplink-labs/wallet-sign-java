@@ -8,14 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 
-@Order(9)
-public class LogGrpcInterceptor implements ServerInterceptor {
+@Order(1)
+public class AuthInterceptor implements ServerInterceptor {
 
-    private static final Logger log = LoggerFactory.getLogger(LogGrpcInterceptor.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthInterceptor.class);
 
+    //todo:增加 JWT 验证
     @Override
     public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(ServerCall<ReqT, RespT> serverCall, Metadata metadata, ServerCallHandler<ReqT, RespT> serverCallHandler) {
-        log.info(serverCall.getMethodDescriptor().getFullMethodName());
-        return serverCallHandler.startCall(serverCall, metadata);
+        log.info("AuthInterceptor<<<<<<<<<<<<<<<<<<<<<<");
+        return null;
     }
+
 }
