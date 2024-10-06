@@ -21,6 +21,7 @@ public class WalletSignServerTest {
     @Autowired
     private RSAStrategy rsaStrategy;
 
+    @Autowired
     private BLSStrategy blsStrategy;
 
     @Test

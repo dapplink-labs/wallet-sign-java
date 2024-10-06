@@ -45,6 +45,6 @@ public class AccountServiceImpl implements IAccountService {
     public String sign(String publicKey, String msg) {
         List<Account> accounts = accountRepository.findAccountByPublicKey(publicKey);
         Assert.isTrue(accounts.size() == 1, "无效公钥");
-        return algorithmService.getStrategy(SignType.valueOf(accounts.get(0).getCryptoMethod())).sign(publicKey, msg);
+        return algorithmService.getStrategy(SignType.valueOf(accounts.getFirst().getCryptoMethod())).sign(publicKey, msg);
     }
 }

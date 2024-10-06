@@ -17,6 +17,10 @@ import java.util.Base64;
 @Component
 public class EdDSAStrategy implements AlgorithmStrategy {
 
+    static {
+        Security.addProvider(new BouncyCastleProvider());
+    }
+
     private final String type = SignType.EDDSA.getName();
 
     @Override
@@ -25,7 +29,7 @@ public class EdDSAStrategy implements AlgorithmStrategy {
     }
 
     @Override
-    public PairEntity generateKeygen() throws Exception {
+    public PairEntity generateKeygen() throws Exception{
         Security.addProvider(new BouncyCastleProvider());
         Ed25519KeyPairGenerator keyGen = new Ed25519KeyPairGenerator();
         keyGen.init(new Ed25519KeyGenerationParameters(new SecureRandom()));
