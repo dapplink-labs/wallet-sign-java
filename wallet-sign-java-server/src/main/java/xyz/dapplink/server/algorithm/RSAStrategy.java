@@ -5,11 +5,10 @@ import org.springframework.stereotype.Component;
 import xyz.dapplink.server.algorithm.dto.PairEntity;
 import xyz.dapplink.server.enums.SignType;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.Security;
+import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
 @Component
@@ -41,7 +40,13 @@ public class RSAStrategy implements AlgorithmStrategy {
     }
 
     @Override
-    public String sign(String publicKey, String msg) {
-        return "";
+    public String sign(String privateKey, String msg) throws Exception {
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PrivateKey pk = keyFactory.generatePrivate(keySpec);
+        Signature signature = Signature.getInstance("SHA256withRSA");
+        signature.initSign(pk);
+        signature.update(msg.getBytes());
+        return Base64.getEncoder().encodeToString(signature.sign());
     }
 }
