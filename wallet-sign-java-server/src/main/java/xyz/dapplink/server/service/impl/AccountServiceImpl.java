@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import xyz.dapplink.server.algorithm.dto.PairEntity;
 import xyz.dapplink.server.entity.Account;
 import xyz.dapplink.server.enums.SignType;
@@ -43,12 +44,14 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public String sign(String publicKey, String msg) {
-        List<Account> accounts = accountRepository.findAccountByPublicKey(publicKey);
+        Assert.isTrue(StringUtils.hasLength(publicKey.trim()),"无效公钥");
+        Assert.isTrue(StringUtils.hasLength(msg.trim()) && msg.trim().length() == 32, "无效Msg");
+        List<Account> accounts = accountRepository.findAccountByPublicKey(publicKey.trim());
         Assert.isTrue(accounts.size() == 1, "无效公钥");
         Account account = accounts.getFirst();
         String signature = "";
         try {
-            signature = algorithmService.getStrategy(SignType.valueOf(account.getCryptoMethod())).sign(account.getPrivateKey(), msg);
+            signature = algorithmService.getStrategy(SignType.valueOf(account.getCryptoMethod())).sign(account.getPrivateKey(), msg.trim());
         } catch (Exception e) {
             log.error(e.getMessage());
         }
