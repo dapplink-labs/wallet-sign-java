@@ -53,9 +53,9 @@ public class BLSStrategy implements AlgorithmStrategy {
     @Override
     public String sign(String privateKey, String msg) throws Exception {
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
-        KeyFactory keyFactory = KeyFactory.getInstance("BLS", "BC");
+        KeyFactory keyFactory = KeyFactory.getInstance("BLS", new BouncyCastleProvider());
         PrivateKey pk = keyFactory.generatePrivate(keySpec);
-        Signature signature = Signature.getInstance("BLS", "BC");
+        Signature signature = Signature.getInstance("BLS", new BouncyCastleProvider());
         signature.initSign(pk);
         signature.update(msg.getBytes());
         return Base64.getEncoder().encodeToString(signature.sign());
