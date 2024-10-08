@@ -1,16 +1,18 @@
 package xyz.dapplink.server;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import xyz.dapplink.server.algorithm.BLSStrategy;
-import xyz.dapplink.server.algorithm.EcDSAStrategy;
-import xyz.dapplink.server.algorithm.EdDSAStrategy;
-import xyz.dapplink.server.algorithm.RSAStrategy;
+import xyz.dapplink.server.algorithm.*;
 import xyz.dapplink.server.algorithm.dto.PairEntity;
 
 @SpringBootTest
 public class WalletSignServerTest {
+
+    private static final Logger log = LoggerFactory.getLogger(WalletSignServerTest.class);
+
 
     @Autowired
     private EcDSAStrategy ecDSAStrategy;
@@ -24,28 +26,37 @@ public class WalletSignServerTest {
     @Autowired
     private BLSStrategy blsStrategy;
 
+    @Autowired
+    private SchnorStrategy schnorStrategy;
+
     @Test
     public void testEcDSAStrategy() throws Exception {
         PairEntity pair = ecDSAStrategy.generateKeygen();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>pair:" + pair);
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>EcDSA pair: {}", pair);
     }
 
     @Test
     public void testEdDSAStrategy() throws Exception {
         PairEntity pair = edDSAStrategy.generateKeygen();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>pair:" + pair);
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>EdDSA pair:{}", pair);
     }
 
     @Test
     public void testRSAStrategy() throws Exception {
         PairEntity pair = rsaStrategy.generateKeygen();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>pair:" + pair);
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>RSA pair:{}", pair);
     }
 
     @Test
     public void testBLSStrategy() throws Exception {
         PairEntity pair = blsStrategy.generateKeygen();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>pair:" + pair);
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>BLS pair:{}", pair);
+    }
+
+    @Test
+    public void testSchnorStrategy() throws Exception {
+        PairEntity pair = schnorStrategy.generateKeygen();
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>Schnor pair:{}", pair);
     }
 
 

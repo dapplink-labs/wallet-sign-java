@@ -29,7 +29,7 @@ public class EcDSAStrategy implements AlgorithmStrategy {
     @Override
     public PairEntity generateKeygen() throws Exception {
         ECGenParameterSpec namedParamSpec = new ECGenParameterSpec("secp256k1");
-        KeyPairGenerator ecKPGen = KeyPairGenerator.getInstance("EC", "BC");
+        KeyPairGenerator ecKPGen = KeyPairGenerator.getInstance("EC", new BouncyCastleProvider());
         ecKPGen.initialize(namedParamSpec);
         KeyPair ecKP = ecKPGen.generateKeyPair();
         return new PairEntity()
@@ -40,7 +40,7 @@ public class EcDSAStrategy implements AlgorithmStrategy {
     @Override
     public String sign(String privateKey, String msg) throws Exception {
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
-        KeyFactory keyFactory = KeyFactory.getInstance("EC");
+        KeyFactory keyFactory = KeyFactory.getInstance("EC", new BouncyCastleProvider());
         PrivateKey pk = keyFactory.generatePrivate(keySpec);
         Signature signature = Signature.getInstance("SHA256withECDSA");
         signature.initSign(pk);

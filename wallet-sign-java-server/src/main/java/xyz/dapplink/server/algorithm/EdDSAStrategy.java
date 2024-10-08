@@ -45,7 +45,7 @@ public class EdDSAStrategy implements AlgorithmStrategy {
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
         KeyFactory keyFactory = KeyFactory.getInstance("Ed25519");
         PrivateKey pk = keyFactory.generatePrivate(keySpec);
-        Signature signature = Signature.getInstance("Ed25519", "BC");
+        Signature signature = Signature.getInstance("Ed25519", new BouncyCastleProvider());
         signature.initSign(pk);
         signature.update(msg.getBytes());
         return Base64.getEncoder().encodeToString(signature.sign());
