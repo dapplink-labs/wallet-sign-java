@@ -15,4 +15,13 @@ public enum SignType {
 
     private final String name;
 
+    public static SignType of(String name) {
+        for (SignType signType : SignType.values()) {
+            if (signType.name.equals(name)) {
+                return signType;
+            }
+        }
+        throw new RuntimeException("无效类型");
+    }
+
 }
