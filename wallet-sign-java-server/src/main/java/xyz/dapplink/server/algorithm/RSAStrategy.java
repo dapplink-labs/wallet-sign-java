@@ -2,7 +2,7 @@ package xyz.dapplink.server.algorithm;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.stereotype.Component;
-import xyz.dapplink.server.algorithm.dto.PairEntity;
+import xyz.dapplink.server.algorithm.dto.KeyPairDto;
 import xyz.dapplink.server.enums.SignType;
 
 import java.security.*;
@@ -27,15 +27,13 @@ public class RSAStrategy implements AlgorithmStrategy {
     }
 
     @Override
-    public PairEntity generateKeygen() throws Exception {
+    public KeyPairDto generateKeygen() throws Exception {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(1024);
+        keyPairGenerator.initialize(2048);
         KeyPair keyPair = keyPairGenerator.generateKeyPair();
         RSAPublicKey rsaPublicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) keyPair.getPrivate();
-        return new PairEntity()
-                .setPublicKey(Base64.getEncoder().encodeToString(rsaPublicKey.getEncoded()))
-                .setPrivateKey(Base64.getEncoder().encodeToString(rsaPrivateKey.getEncoded()));
+        return new KeyPairDto().setPublicKey(Base64.getEncoder().encodeToString(rsaPublicKey.getEncoded())).setPrivateKey(Base64.getEncoder().encodeToString(rsaPrivateKey.getEncoded()));
 
     }
 

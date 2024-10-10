@@ -13,7 +13,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.jce.spec.ECParameterSpec;
 import org.bouncycastle.util.BigIntegers;
 import org.springframework.stereotype.Component;
-import xyz.dapplink.server.algorithm.dto.PairEntity;
+import xyz.dapplink.server.algorithm.dto.KeyPairDto;
 import xyz.dapplink.server.enums.SignType;
 
 
@@ -36,7 +36,7 @@ public class BLSStrategy implements AlgorithmStrategy {
     }
 
     @Override
-    public PairEntity generateKeygen() throws Exception {
+    public KeyPairDto generateKeygen() throws Exception {
         ECParameterSpec spec = ECNamedCurveTable.getParameterSpec("sect283k1");
         ECDomainParameters domainParams = new ECDomainParameters(spec.getCurve(), spec.getG(), spec.getN(), spec.getH());
         ECKeyPairGenerator keyGen = new ECKeyPairGenerator();
@@ -45,9 +45,7 @@ public class BLSStrategy implements AlgorithmStrategy {
         AsymmetricCipherKeyPair keyPair = keyGen.generateKeyPair();
         ECPublicKeyParameters publicKey = (ECPublicKeyParameters) keyPair.getPublic();
         ECPrivateKeyParameters privateKey = (ECPrivateKeyParameters) keyPair.getPrivate();
-        return new PairEntity()
-                .setPublicKey(Base64.getEncoder().encodeToString(publicKey.getQ().getEncoded(false)))
-                .setPrivateKey(Base64.getEncoder().encodeToString(BigIntegers.asUnsignedByteArray(privateKey.getD())));
+        return new KeyPairDto().setPublicKey(Base64.getEncoder().encodeToString(publicKey.getQ().getEncoded(false))).setPrivateKey(Base64.getEncoder().encodeToString(BigIntegers.asUnsignedByteArray(privateKey.getD())));
     }
 
     @Override

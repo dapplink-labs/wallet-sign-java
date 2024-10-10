@@ -12,17 +12,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class AlgorithmService {
 
-    private Map<String, AlgorithmStrategy> strategyMap = new ConcurrentHashMap<>();
+    private final Map<String, AlgorithmStrategy> strategyMap = new ConcurrentHashMap<>(SignType.values().length);
 
     @Resource
     public void setStrategyMap(List<AlgorithmStrategy> algorithmStrategies) {
         strategyMap.clear();
-        algorithmStrategies.forEach(item -> {
-            strategyMap.put(item.getTypeName(), item);
-        });
+        algorithmStrategies.forEach(item -> strategyMap.put(item.getTypeName(), item));
     }
 
-    public AlgorithmStrategy getStrategy(SignType signType){
+    public AlgorithmStrategy getStrategy(SignType signType) {
         return strategyMap.get(signType.getName());
     }
 

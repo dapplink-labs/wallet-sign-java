@@ -22,7 +22,7 @@ public class GrpcAccountService extends AccountGrpc.AccountImplBase {
     @Override
     public void generateKeygen(GenerateKeygenRequest request, StreamObserver<GenerateKeygenResponse> responseObserver) {
         Assert.isTrue(request.getNumber() > 0, "无效集合大小");
-        List<String> publicKeyList = accountService.generateKeyGen(request.getNumber(), SignType.valueOf(request.getMethod().name()));
+        List<String> publicKeyList = accountService.generateKeyGen(request.getNumber(), SignType.of(request.getMethod().name()));
         GenerateKeygenResponse response = GenerateKeygenResponse.newBuilder().addAllPublicKeyList(publicKeyList).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -33,7 +33,7 @@ public class GrpcAccountService extends AccountGrpc.AccountImplBase {
         Assert.isTrue(StringUtils.hasLength(request.getPublicKey()), "无效公钥");
         Assert.isTrue(StringUtils.hasLength(request.getMsg()), "无效MSG");
         String signature = accountService.sign(request.getPublicKey(), request.getMsg());
-        GenerateSignatureResponse response = GenerateSignatureResponse.newBuilder().setSignature(signature).build();
+        GenerateSignatureResponse response = GenerateSignatureResponse.newBuilder().setSignature(signature.trim()).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
