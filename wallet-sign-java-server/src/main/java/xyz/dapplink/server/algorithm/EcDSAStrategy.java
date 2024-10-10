@@ -3,7 +3,7 @@ package xyz.dapplink.server.algorithm;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import org.springframework.stereotype.Component;
-import xyz.dapplink.server.algorithm.dto.PairEntity;
+import xyz.dapplink.server.algorithm.dto.KeyPairDto;
 import xyz.dapplink.server.enums.SignType;
 
 import java.security.*;
@@ -27,14 +27,12 @@ public class EcDSAStrategy implements AlgorithmStrategy {
     }
 
     @Override
-    public PairEntity generateKeygen() throws Exception {
+    public KeyPairDto generateKeygen() throws Exception {
         ECGenParameterSpec namedParamSpec = new ECGenParameterSpec("secp256k1");
         KeyPairGenerator ecKPGen = KeyPairGenerator.getInstance("EC", new BouncyCastleProvider());
         ecKPGen.initialize(namedParamSpec);
         KeyPair ecKP = ecKPGen.generateKeyPair();
-        return new PairEntity()
-                .setPublicKey(Base64.getEncoder().encodeToString(ecKP.getPublic().getEncoded()))
-                .setPrivateKey(Base64.getEncoder().encodeToString(ecKP.getPrivate().getEncoded()));
+        return new KeyPairDto().setPublicKey(Base64.getEncoder().encodeToString(ecKP.getPublic().getEncoded())).setPrivateKey(Base64.getEncoder().encodeToString(ecKP.getPrivate().getEncoded()));
     }
 
     @Override

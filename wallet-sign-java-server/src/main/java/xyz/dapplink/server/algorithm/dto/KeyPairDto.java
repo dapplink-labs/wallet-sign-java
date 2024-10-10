@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @Accessors(chain = true)
-public class PairEntity implements Serializable {
+public class KeyPairDto implements Serializable {
 
     private String publicKey;
 

@@ -7,11 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SignType {
 
-    ECDSA("ECDSA"),
-    EDDSA("EDDSA"),
-    BLS("BLS"),
-    RSA("RSA"),
-    SCHNOR("SCHNOR");
+    ECDSA("ECDSA"), EDDSA("EDDSA"), BLS("BLS"), RSA("RSA"), SCHNOR("SCHNOR");
 
     private final String name;
 
@@ -21,7 +17,7 @@ public enum SignType {
                 return signType;
             }
         }
-        throw new RuntimeException("无效类型");
+        throw new RuntimeException("Invalid Type");
     }
 
 }

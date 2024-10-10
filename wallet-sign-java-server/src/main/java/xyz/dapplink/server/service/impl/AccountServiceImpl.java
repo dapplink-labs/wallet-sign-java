@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import xyz.dapplink.server.algorithm.dto.PairEntity;
+import xyz.dapplink.server.algorithm.dto.KeyPairDto;
 import xyz.dapplink.server.entity.Account;
 import xyz.dapplink.server.enums.SignType;
 import xyz.dapplink.server.repository.AccountRepository;
@@ -29,7 +29,7 @@ public class AccountServiceImpl implements IAccountService {
         List<String> result = new LinkedList<>();
         List<Account> accountList = new LinkedList<>();
         for (int i = 0; i < number; i++) {
-            PairEntity pair;
+            KeyPairDto pair;
             try {
                 pair = algorithmService.getStrategy(signType).generateKeygen();
                 accountList.add(new Account().setPublicKey(pair.getPublicKey()).setPrivateKey(pair.getPrivateKey()).setCryptoMethod(signType.getName()));
