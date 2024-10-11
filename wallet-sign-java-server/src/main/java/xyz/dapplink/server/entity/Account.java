@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import xyz.dapplink.server.enums.SignType;
 
 @Data
 @Entity
@@ -21,7 +22,7 @@ public class Account extends BaseEntity {
     @Lob
     private String address;
 
-    private String cryptoMethod;
+    private SignType cryptoMethod;
 
 }
 

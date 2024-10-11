@@ -32,7 +32,7 @@ public class AccountServiceImpl implements IAccountService {
             KeyPairDto pair;
             try {
                 pair = algorithmService.getStrategy(signType).generateKeygen();
-                accountList.add(new Account().setPublicKey(pair.getPublicKey()).setPrivateKey(pair.getPrivateKey()).setCryptoMethod(signType.getName()));
+                accountList.add(new Account().setPublicKey(pair.getPublicKey()).setPrivateKey(pair.getPrivateKey()).setCryptoMethod(signType));
                 result.add(pair.getPublicKey());
             } catch (Exception e) {
                 log.error(e.getMessage());
@@ -51,7 +51,7 @@ public class AccountServiceImpl implements IAccountService {
         Account account = accounts.getFirst();
         String signature = "";
         try {
-            signature = algorithmService.getStrategy(SignType.valueOf(account.getCryptoMethod())).sign(account.getPrivateKey(), msg.trim());
+            signature = algorithmService.getStrategy(account.getCryptoMethod()).sign(account.getPrivateKey(), msg.trim());
         } catch (Exception e) {
             log.error(e.getMessage());
         }

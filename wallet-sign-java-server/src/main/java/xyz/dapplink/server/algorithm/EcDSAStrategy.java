@@ -28,9 +28,8 @@ public class EcDSAStrategy implements AlgorithmStrategy {
 
     @Override
     public KeyPairDto generateKeygen() throws Exception {
-        ECGenParameterSpec namedParamSpec = new ECGenParameterSpec("secp256k1");
         KeyPairGenerator ecKPGen = KeyPairGenerator.getInstance("EC", new BouncyCastleProvider());
-        ecKPGen.initialize(namedParamSpec);
+        ecKPGen.initialize(new ECGenParameterSpec("secp256k1"), new SecureRandom());
         KeyPair ecKP = ecKPGen.generateKeyPair();
         return new KeyPairDto().setPublicKey(Base64.getEncoder().encodeToString(ecKP.getPublic().getEncoded())).setPrivateKey(Base64.getEncoder().encodeToString(ecKP.getPrivate().getEncoded()));
     }
