@@ -21,7 +21,7 @@ public class GrpcAccountService extends AccountGrpc.AccountImplBase {
 
     @Override
     public void generateKeygen(GenerateKeygenRequest request, StreamObserver<GenerateKeygenResponse> responseObserver) {
-        Assert.isTrue(request.getNumber() > 0, "无效集合大小");
+        Assert.isTrue(request.getNumber() > 0, "invalid number");
         List<String> publicKeyList = accountService.generateKeyGen(request.getNumber(), SignType.of(request.getMethod().name()));
         GenerateKeygenResponse response = GenerateKeygenResponse.newBuilder().addAllPublicKeyList(publicKeyList).build();
         responseObserver.onNext(response);
@@ -30,8 +30,8 @@ public class GrpcAccountService extends AccountGrpc.AccountImplBase {
 
     @Override
     public void generateSignature(GenerateSignatureRequest request, StreamObserver<GenerateSignatureResponse> responseObserver) {
-        Assert.isTrue(StringUtils.hasLength(request.getPublicKey()), "无效公钥");
-        Assert.isTrue(StringUtils.hasLength(request.getMsg()), "无效MSG");
+        Assert.isTrue(StringUtils.hasLength(request.getPublicKey()), "invalid public key");
+        Assert.isTrue(StringUtils.hasLength(request.getMsg()), "invalid transaction message");
         String signature = accountService.sign(request.getPublicKey(), request.getMsg());
         GenerateSignatureResponse response = GenerateSignatureResponse.newBuilder().setSignature(signature.trim()).build();
         responseObserver.onNext(response);

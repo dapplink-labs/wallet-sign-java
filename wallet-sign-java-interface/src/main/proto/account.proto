@@ -4,15 +4,12 @@ option java_multiple_files = true;
 option java_package = "xyz.dapplink.iface.lib";
 option java_outer_classname = "AccountProto";
 
-service Account {
-
-  rpc GenerateKeygen(GenerateKeygenRequest) returns (GenerateKeygenResponse){
-
-  }
-
-  rpc GenerateSignature(GenerateSignatureRequest) returns (GenerateSignatureResponse){
-
-  }
+enum AlgorithmMethod {
+  ECDSA = 0;
+  EDDSA = 1;
+  BLS = 2;
+  RSA = 3;
+  SCHNOR = 4;
 }
 
 message GenerateKeygenRequest {
@@ -33,10 +30,9 @@ message GenerateSignatureResponse{
   string signature = 1;
 }
 
-enum AlgorithmMethod {
-  ECDSA = 0;
-  EDDSA = 1;
-  BLS = 2;
-  RSA = 3;
-  SCHNOR = 4;
+service Account {
+
+  rpc GenerateKeygen(GenerateKeygenRequest) returns (GenerateKeygenResponse){}
+
+  rpc GenerateSignature(GenerateSignatureRequest) returns (GenerateSignatureResponse){}
 }
