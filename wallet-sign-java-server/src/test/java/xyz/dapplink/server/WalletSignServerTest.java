@@ -20,14 +20,14 @@ public class WalletSignServerTest {
     @Autowired
     private EdDSAStrategy edDSAStrategy;
 
-    @Autowired
-    private RSAStrategy rsaStrategy;
-
-    @Autowired
-    private BLSStrategy blsStrategy;
-
-    @Autowired
-    private SchnorStrategy schnorStrategy;
+//    @Autowired
+//    private RSAStrategy rsaStrategy;
+//
+//    @Autowired
+//    private BLSStrategy blsStrategy;
+//
+//    @Autowired
+//    private SchnorStrategy schnorStrategy;
 
     @Test
     public void testEcDSAStrategy() throws Exception {
@@ -41,23 +41,23 @@ public class WalletSignServerTest {
         log.info(">>>>>>>>>>>>>>>>>>>>>>>>>EdDSA pair:{}", pair);
     }
 
-    @Test
-    public void testRSAStrategy() throws Exception {
-        KeyPairDto pair = rsaStrategy.generateKeygen();
-        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>RSA pair:{}", pair);
-    }
-
-    @Test
-    public void testBLSStrategy() throws Exception {
-        KeyPairDto pair = blsStrategy.generateKeygen();
-        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>BLS pair:{}", pair);
-    }
-
-    @Test
-    public void testSchnorStrategy() throws Exception {
-        KeyPairDto pair = schnorStrategy.generateKeygen();
-        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>Schnor pair:{}", pair);
-    }
+//    @Test
+//    public void testRSAStrategy() throws Exception {
+//        KeyPairDto pair = rsaStrategy.generateKeygen();
+//        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>RSA pair:{}", pair);
+//    }
+//
+//    @Test
+//    public void testBLSStrategy() throws Exception {
+//        KeyPairDto pair = blsStrategy.generateKeygen();
+//        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>BLS pair:{}", pair);
+//    }
+//
+//    @Test
+//    public void testSchnorStrategy() throws Exception {
+//        KeyPairDto pair = schnorStrategy.generateKeygen();
+//        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>Schnor pair:{}", pair);
+//    }
 
 
 }

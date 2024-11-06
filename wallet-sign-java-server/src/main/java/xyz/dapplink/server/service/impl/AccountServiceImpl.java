@@ -4,57 +4,48 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
+import xyz.dapplink.iface.lib.PublicKey;
 import xyz.dapplink.server.algorithm.dto.KeyPairDto;
-import xyz.dapplink.server.entity.Account;
 import xyz.dapplink.server.enums.SignType;
-import xyz.dapplink.server.repository.AccountRepository;
 import xyz.dapplink.server.service.AlgorithmService;
 import xyz.dapplink.server.service.IAccountService;
+import xyz.dapplink.server.service.LevelDBService;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
 @AllArgsConstructor
 public class AccountServiceImpl implements IAccountService {
 
-    private final AccountRepository accountRepository;
-
     private final AlgorithmService algorithmService;
 
+    private final LevelDBService dbService;
+
     @Override
-    public List<String> generateKeyGen(int number, SignType signType) {
-        List<String> result = new LinkedList<>();
-        List<Account> accountList = new LinkedList<>();
+    public List<PublicKey> generateKeyGen(int number, SignType signType) {
+        Assert.isTrue(number > 0 && number <= 100000, "invalid numbers");
+        List<PublicKey> keyList = new LinkedList<>();
+        Map<byte[], byte[]> objList = new HashMap<>();
         for (int i = 0; i < number; i++) {
-            KeyPairDto pair;
+            KeyPairDto keyPairDto;
             try {
-                pair = algorithmService.getStrategy(signType).generateKeygen();
-                accountList.add(new Account().setPublicKey(pair.getPublicKey()).setPrivateKey(pair.getPrivateKey()).setCryptoMethod(signType.getName()));
-                result.add(pair.getPublicKey());
+                keyPairDto = algorithmService.getStrategy(signType).generateKeygen();
+                objList.put(keyPairDto.getPublicKey().getBytes(), keyPairDto.getPrivateKey().getBytes());
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error("generateKeyGen error:{}", e.getMessage(), e);
+                throw new RuntimeException(e.getMessage());
             }
+            PublicKey key = PublicKey.newBuilder().setCompressPubkey(keyPairDto.getCompressPublicKey()).setDecompressPubkey(keyPairDto.getPublicKey()).build();
+            keyList.add(key);
         }
-        accountRepository.saveAll(accountList);
-        return result;
+        dbService.batchSave(objList);
+        return keyList;
     }
 
     @Override
     public String sign(String publicKey, String msg) {
-        Assert.isTrue(StringUtils.hasLength(publicKey.trim()),"无效公钥");
-        Assert.isTrue(StringUtils.hasLength(msg.trim()) && msg.trim().length() == 32, "无效Msg");
-        List<Account> accounts = accountRepository.findAccountByPublicKey(publicKey.trim());
-        Assert.isTrue(accounts.size() == 1, "无效公钥");
-        Account account = accounts.getFirst();
-        String signature = "";
-        try {
-            signature = algorithmService.getStrategy(SignType.valueOf(account.getCryptoMethod())).sign(account.getPrivateKey(), msg.trim());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return signature;
+
+        return null;
     }
 }

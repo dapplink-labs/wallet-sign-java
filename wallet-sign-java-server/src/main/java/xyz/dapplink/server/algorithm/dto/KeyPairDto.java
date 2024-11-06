@@ -13,4 +13,6 @@ public class KeyPairDto implements Serializable {
 
     private String privateKey;
 
+    private String compressPublicKey;
+
 }

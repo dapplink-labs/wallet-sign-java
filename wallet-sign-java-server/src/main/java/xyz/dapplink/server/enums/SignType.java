@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SignType {
 
-    ECDSA("ECDSA"), EDDSA("EDDSA"), BLS("BLS"), RSA("RSA"), SCHNOR("SCHNOR");
+    ECDSA("ECDSA"), EDDSA("EDDSA");
 
     private final String name;
 
