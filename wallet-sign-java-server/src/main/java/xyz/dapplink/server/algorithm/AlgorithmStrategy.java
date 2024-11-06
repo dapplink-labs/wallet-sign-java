@@ -7,8 +7,8 @@ public interface AlgorithmStrategy {
 
     String getTypeName();
 
-    KeyPairDto generateKeygen() throws Exception;
+    KeyPairDto generateKeygen() throws Exception ;
 
-    String sign(String privateKey, String msg) throws Exception;
+    String sign(String privateKey, String msg) throws Exception ;
 
 }

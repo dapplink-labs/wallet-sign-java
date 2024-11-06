@@ -4,8 +4,6 @@ package xyz.dapplink.server.grpc;
 import io.grpc.stub.StreamObserver;
 import lombok.AllArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import xyz.dapplink.iface.lib.*;
 import xyz.dapplink.server.enums.SignType;
 import xyz.dapplink.server.service.IAccountService;
@@ -15,27 +13,47 @@ import java.util.List;
 
 @GrpcService
 @AllArgsConstructor
-public class GrpcAccountService extends AccountGrpc.AccountImplBase {
+public class GrpcAccountService extends WalletServiceGrpc.WalletServiceImplBase {
 
     private final IAccountService accountService;
 
     @Override
-    public void generateKeygen(GenerateKeygenRequest request, StreamObserver<GenerateKeygenResponse> responseObserver) {
-        Assert.isTrue(request.getNumber() > 0, "invalid number");
-        List<String> publicKeyList = accountService.generateKeyGen(request.getNumber(), SignType.of(request.getMethod().name()));
-        GenerateKeygenResponse response = GenerateKeygenResponse.newBuilder().addAllPublicKeyList(publicKeyList).build();
+    public void getSupportSignWay(SupportSignWayRequest request, StreamObserver<SupportSignWayResponse> responseObserver) {
+        int code = 0;
+        String msg = "not support sign way";
+        boolean supported = false;
+        if (request.getType().trim().equalsIgnoreCase("ecdsa") || request.getType().trim().equalsIgnoreCase("eddsa")) {
+            code = 1;
+            msg = "support sign way";
+            supported = true;
+        }
+        SupportSignWayResponse response = SupportSignWayResponse.newBuilder()
+                .setMsg(msg)
+                .setCode(String.valueOf(code))
+                .setSupport(supported)
+                .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 
     @Override
-    public void generateSignature(GenerateSignatureRequest request, StreamObserver<GenerateSignatureResponse> responseObserver) {
-        Assert.isTrue(StringUtils.hasLength(request.getPublicKey()), "invalid public key");
-        Assert.isTrue(StringUtils.hasLength(request.getMsg()), "invalid transaction message");
-        String signature = accountService.sign(request.getPublicKey(), request.getMsg());
-        GenerateSignatureResponse response = GenerateSignatureResponse.newBuilder().setSignature(signature.trim()).build();
+    public void exportPublicKeyList(ExportPublicKeyRequest request, StreamObserver<ExportPublicKeyResponse> responseObserver) {
+        int code = 0;
+        String msg = "error msg";
+        List<PublicKey> resultList = accountService.generateKeyGen(Math.toIntExact(request.getNumber()), SignType.of(request.getType().toUpperCase()));
+        ExportPublicKeyResponse response = ExportPublicKeyResponse.newBuilder()
+                .setMsg(msg)
+                .setCode(String.valueOf(code))
+                .addAllPublicKey(resultList)
+                .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void signTxMessage(SignTxMessageRequest request, StreamObserver<SignTxMessageResponse> responseObserver) {
+    }
+
+
 }
 
