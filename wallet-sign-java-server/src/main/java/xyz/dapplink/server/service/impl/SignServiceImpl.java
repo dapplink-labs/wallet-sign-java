@@ -9,17 +9,16 @@ import xyz.dapplink.server.algorithm.AlgorithmStrategy;
 import xyz.dapplink.server.algorithm.dto.KeyPairDto;
 import xyz.dapplink.server.enums.SignType;
 import xyz.dapplink.server.service.AlgorithmService;
-import xyz.dapplink.server.service.IAccountService;
+import xyz.dapplink.server.service.ISignService;
 import xyz.dapplink.server.service.LevelDBService;
 import xyz.dapplink.server.utils.HexStringUtils;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
 @Service
 @AllArgsConstructor
-public class AccountServiceImpl implements IAccountService {
+public class SignServiceImpl implements ISignService {
 
     private final AlgorithmService algorithmService;
 
@@ -31,7 +30,6 @@ public class AccountServiceImpl implements IAccountService {
         List<PublicKey> keyList = new ArrayList<>(number);
         Map<byte[], byte[]> objList = new HashMap<>(number);
         AlgorithmStrategy strategyService = algorithmService.getStrategy(signType);
-        log.info("start generate: {}", LocalDateTime.now());
         for (int i = 0; i < number; i++) {
             KeyPairDto keyPairDto;
             try {

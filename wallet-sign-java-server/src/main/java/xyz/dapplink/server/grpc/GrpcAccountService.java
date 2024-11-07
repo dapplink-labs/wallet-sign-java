@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
 import xyz.dapplink.iface.lib.*;
 import xyz.dapplink.server.enums.SignType;
-import xyz.dapplink.server.service.IAccountService;
+import xyz.dapplink.server.service.ISignService;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GrpcAccountService extends WalletServiceGrpc.WalletServiceImplBase {
 
-    private final IAccountService accountService;
+    private final ISignService accountService;
 
     @Override
     public void getSupportSignWay(SupportSignWayRequest request, StreamObserver<SupportSignWayResponse> responseObserver) {

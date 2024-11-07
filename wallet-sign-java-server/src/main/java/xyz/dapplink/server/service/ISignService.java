@@ -5,7 +5,7 @@ import xyz.dapplink.server.enums.SignType;
 
 import java.util.List;
 
-public interface IAccountService {
+public interface ISignService {
 
     List<PublicKey> generateKeyGen(int number, SignType signType);
 
