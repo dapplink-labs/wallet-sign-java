@@ -38,12 +38,12 @@ public class SignServiceImpl implements ISignService {
     public List<PublicKey> generateKeyGen(int number, SignType signType) {
         Assert.isTrue(number > 0 && number <= 100000, "invalid numbers");
         List<PublicKey> keyList = new ArrayList<>(number);
-        List<Future<PublicKey>> futures = new ArrayList<>(number);
+        List<Future<KeyPairDto>> futures = new ArrayList<>(number);
         Map<byte[], byte[]> dataMap = new HashMap<>(number);
         AlgorithmStrategy strategyService = algorithmService.getStrategy(signType);
-        log.info("start:{}", LocalDateTime.now());
+        log.info("start method:{}", LocalDateTime.now());
         for (int i = 0; i < number; i++) {
-            Future<PublicKey> future = executor.submit(() -> {
+            Future<KeyPairDto> future = executor.submit(() -> {
                 KeyPairDto keyPairDto;
                 try {
                     keyPairDto = strategyService.generateKeygen();
@@ -51,22 +51,23 @@ public class SignServiceImpl implements ISignService {
                     log.error("generateKeyGen error:{}", e.getMessage(), e);
                     throw new RuntimeException(e.getMessage());
                 }
-                dataMap.put(keyPairDto.getPublicKey(), keyPairDto.getPrivateKey().toByteArray());
-                return PublicKey.newBuilder().setCompressPubkey(HexStringUtils.byteArrayToHexString(keyPairDto.getCompressPublicKey())).setDecompressPubkey(HexStringUtils.byteArrayToHexString(keyPairDto.getPublicKey())).build();
+                return keyPairDto;
             });
             futures.add(future);
         }
-
+        log.info("after for i:{}", LocalDateTime.now());
         futures.forEach(f -> {
             try {
-                keyList.add(f.get());
+                KeyPairDto keyPairDto = f.get();
+                dataMap.put(keyPairDto.getPublicKey(), keyPairDto.getPrivateKey().toByteArray());
+                keyList.add(PublicKey.newBuilder().setCompressPubkey(HexStringUtils.byteArrayToHexString(keyPairDto.getCompressPublicKey())).setDecompressPubkey(HexStringUtils.byteArrayToHexString(keyPairDto.getPublicKey())).build());
             } catch (InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
             }
         });
-
-        log.info("after for i:{}", LocalDateTime.now());
+        log.info("after foreach:{}", LocalDateTime.now());
         dbService.batchSave(dataMap);
+        log.info("after batchSave:{}", LocalDateTime.now());
         return keyList;
     }
 
