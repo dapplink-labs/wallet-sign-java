@@ -39,7 +39,7 @@ public class GrpcAccountService extends WalletServiceGrpc.WalletServiceImplBase 
     @Override
     public void exportPublicKeyList(ExportPublicKeyRequest request, StreamObserver<ExportPublicKeyResponse> responseObserver) {
         int code = 0;
-        String msg = "error msg";
+        String msg = "success";
         List<PublicKey> resultList = accountService.generateKeyGen(Math.toIntExact(request.getNumber()), SignType.of(request.getType().toUpperCase()));
         ExportPublicKeyResponse response = ExportPublicKeyResponse.newBuilder()
                 .setMsg(msg)

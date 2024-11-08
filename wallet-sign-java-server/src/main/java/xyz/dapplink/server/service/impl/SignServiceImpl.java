@@ -1,6 +1,7 @@
 package xyz.dapplink.server.service.impl;
 
-import lombok.AllArgsConstructor;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -13,35 +14,59 @@ import xyz.dapplink.server.service.ISignService;
 import xyz.dapplink.server.service.LevelDBService;
 import xyz.dapplink.server.utils.HexStringUtils;
 
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.*;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SignServiceImpl implements ISignService {
 
     private final AlgorithmService algorithmService;
 
     private final LevelDBService dbService;
 
+    private ExecutorService executor;
+
+    @PostConstruct
+    public void init() {
+        executor = Executors.newVirtualThreadPerTaskExecutor();
+    }
+
     @Override
     public List<PublicKey> generateKeyGen(int number, SignType signType) {
         Assert.isTrue(number > 0 && number <= 100000, "invalid numbers");
         List<PublicKey> keyList = new ArrayList<>(number);
-        Map<byte[], byte[]> objList = new HashMap<>(number);
+        List<Future<PublicKey>> futures = new ArrayList<>(number);
+        Map<byte[], byte[]> dataMap = new HashMap<>(number);
         AlgorithmStrategy strategyService = algorithmService.getStrategy(signType);
+        log.info("start:{}", LocalDateTime.now());
         for (int i = 0; i < number; i++) {
-            KeyPairDto keyPairDto;
-            try {
-                keyPairDto = strategyService.generateKeygen();
-                objList.put(keyPairDto.getPublicKey().getBytes(), keyPairDto.getPrivateKey().getBytes());
-            } catch (Exception e) {
-                log.error("generateKeyGen error:{}", e.getMessage(), e);
-                throw new RuntimeException(e.getMessage());
-            }
-            keyList.add(PublicKey.newBuilder().setCompressPubkey(keyPairDto.getCompressPublicKey()).setDecompressPubkey(keyPairDto.getPublicKey()).build());
+            Future<PublicKey> future = executor.submit(() -> {
+                KeyPairDto keyPairDto;
+                try {
+                    keyPairDto = strategyService.generateKeygen();
+                } catch (RuntimeException e) {
+                    log.error("generateKeyGen error:{}", e.getMessage(), e);
+                    throw new RuntimeException(e.getMessage());
+                }
+                dataMap.put(keyPairDto.getPublicKey(), keyPairDto.getPrivateKey().toByteArray());
+                return PublicKey.newBuilder().setCompressPubkey(HexStringUtils.byteArrayToHexString(keyPairDto.getCompressPublicKey())).setDecompressPubkey(HexStringUtils.byteArrayToHexString(keyPairDto.getPublicKey())).build();
+            });
+            futures.add(future);
         }
-        dbService.batchSave(objList);
+
+        futures.forEach(f -> {
+            try {
+                keyList.add(f.get());
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        log.info("after for i:{}", LocalDateTime.now());
+        dbService.batchSave(dataMap);
         return keyList;
     }
 

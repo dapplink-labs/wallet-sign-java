@@ -4,15 +4,16 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 @Data
 @Accessors(chain = true)
 public class KeyPairDto implements Serializable {
 
-    private String publicKey;
+    private BigInteger privateKey;
 
-    private String privateKey;
+    private byte[] publicKey;
 
-    private String compressPublicKey;
+    private byte[] compressPublicKey;
 
 }

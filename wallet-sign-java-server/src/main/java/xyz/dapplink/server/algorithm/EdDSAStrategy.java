@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import xyz.dapplink.server.algorithm.dto.KeyPairDto;
 import xyz.dapplink.server.enums.SignType;
 
+import java.math.BigInteger;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
@@ -35,7 +36,7 @@ public class EdDSAStrategy implements AlgorithmStrategy {
         AsymmetricCipherKeyPair keyPair = keyGen.generateKeyPair();
         Ed25519PrivateKeyParameters privateKey = (Ed25519PrivateKeyParameters) keyPair.getPrivate();
         Ed25519PublicKeyParameters publicKey = (Ed25519PublicKeyParameters) keyPair.getPublic();
-        return new KeyPairDto().setPublicKey(Base64.getEncoder().encodeToString(publicKey.getEncoded())).setPrivateKey(Base64.getEncoder().encodeToString(privateKey.getEncoded()));
+        return new KeyPairDto().setPublicKey(publicKey.getEncoded()).setPrivateKey(new BigInteger(privateKey.getEncoded()));
     }
 
     @Override
