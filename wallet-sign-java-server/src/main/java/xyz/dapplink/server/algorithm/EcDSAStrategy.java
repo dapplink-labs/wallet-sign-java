@@ -1,5 +1,6 @@
 package xyz.dapplink.server.algorithm;
 
+import jakarta.annotation.PostConstruct;
 import org.bouncycastle.asn1.sec.SECNamedCurves;
 import org.bouncycastle.asn1.sec.SECObjectIdentifiers;
 import org.bouncycastle.asn1.x9.X9ECParameters;
@@ -24,17 +25,17 @@ import java.util.Base64;
 @Component
 public class EcDSAStrategy implements AlgorithmStrategy {
 
+    private final String type = SignType.ECDSA.getName();
 
-    static {
+    private ECDomainParameters domainParams;
+
+    @PostConstruct
+    public void init() {
         Security.addProvider(new BouncyCastleProvider());
         // choose curve parameters, secp256k1
         X9ECParameters ecParams = SECNamedCurves.getByOID(SECObjectIdentifiers.secp256k1);
         domainParams = new ECDomainParameters(ecParams.getCurve(), ecParams.getG(), ecParams.getN(), ecParams.getH());
     }
-
-    private final String type = SignType.ECDSA.getName();
-
-    private static final ECDomainParameters domainParams;
 
     @Override
     public String getTypeName() {
@@ -43,7 +44,6 @@ public class EcDSAStrategy implements AlgorithmStrategy {
 
     @Override
     public KeyPairDto generateKeygen() throws Exception {
-
 
         // create generator and init
         ECKeyPairGenerator generator = new ECKeyPairGenerator();
