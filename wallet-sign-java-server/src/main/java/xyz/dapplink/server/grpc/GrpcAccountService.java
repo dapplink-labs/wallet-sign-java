@@ -52,6 +52,16 @@ public class GrpcAccountService extends WalletServiceGrpc.WalletServiceImplBase 
 
     @Override
     public void signTxMessage(SignTxMessageRequest request, StreamObserver<SignTxMessageResponse> responseObserver) {
+        int code = 0;
+        String msg = "not support sign way";
+        String sign = accountService.sign(request.getPublicKey(), request.getMessageHash(),SignType.of(request.getType().toUpperCase()));
+        SignTxMessageResponse response = SignTxMessageResponse.newBuilder()
+                .setMsg(msg)
+                .setCode(String.valueOf(code))
+                .setSignature(sign)
+                .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 
 

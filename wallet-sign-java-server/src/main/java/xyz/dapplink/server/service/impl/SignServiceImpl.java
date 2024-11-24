@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import xyz.dapplink.iface.lib.PublicKey;
 import xyz.dapplink.server.algorithm.AlgorithmStrategy;
 import xyz.dapplink.server.algorithm.dto.KeyPairDto;
 import xyz.dapplink.server.enums.SignType;
@@ -72,10 +71,17 @@ public class SignServiceImpl implements ISignService {
     }
 
     @Override
-    public String sign(String publicKey, String msg) {
+    public String sign(String publicKey, String msg, SignType signType) {
         Assert.isTrue(msg.length() == 32, "invalid string length");
-        byte[] bytesPublicKey = dbService.getByPublicKey(HexStringUtils.hexStringToByteArray(publicKey));
-        Assert.notNull(bytesPublicKey, "empty result");
-        return null;
+        byte[] bytesPrivateKey = dbService.getByPublicKey(HexStringUtils.hexStringToByteArray(publicKey));
+        Assert.notNull(bytesPrivateKey, "empty result");
+        AlgorithmStrategy strategyService = algorithmService.getStrategy(signType);
+        String signature = "unknown error";
+        try {
+            signature = strategyService.sign(Arrays.toString(bytesPrivateKey), msg);
+        } catch (Exception e) {
+            log.error("sign error:{}", e.getMessage(), e);
+        }
+        return signature;
     }
 }
