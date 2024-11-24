@@ -8,8 +8,8 @@ option java_outer_classname = "WalletProto";
 
 
 message PublicKey {
-    string compress_pubkey = 1;
-    string decompress_pubkey = 2;
+  string compress_pubkey = 1;
+  string decompress_pubkey = 2;
 }
 
 message SupportSignWayRequest{
@@ -37,8 +37,9 @@ message ExportPublicKeyResponse {
 
 message SignTxMessageRequest {
   string consumer_token = 1;
-  string public_key = 2;
-  string message_hash = 3;
+  string type = 2;
+  string public_key = 3;
+  string message_hash = 4;
 }
 
 message SignTxMessageResponse {

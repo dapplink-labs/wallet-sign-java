@@ -17,6 +17,7 @@ private static final long serialVersionUID = 0L;
   }
   private SignTxMessageRequest() {
     consumerToken_ = "";
+    type_ = "";
     publicKey_ = "";
     messageHash_ = "";
   }
@@ -80,11 +81,50 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int PUBLIC_KEY_FIELD_NUMBER = 2;
+  public static final int TYPE_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object type_ = "";
+  /**
+   * <code>string type = 2;</code>
+   * @return The type.
+   */
+  @java.lang.Override
+  public java.lang.String getType() {
+    java.lang.Object ref = type_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      type_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string type = 2;</code>
+   * @return The bytes for type.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getTypeBytes() {
+    java.lang.Object ref = type_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      type_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int PUBLIC_KEY_FIELD_NUMBER = 3;
   @SuppressWarnings("serial")
   private volatile java.lang.Object publicKey_ = "";
   /**
-   * <code>string public_key = 2;</code>
+   * <code>string public_key = 3;</code>
    * @return The publicKey.
    */
   @java.lang.Override
@@ -101,7 +141,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string public_key = 2;</code>
+   * <code>string public_key = 3;</code>
    * @return The bytes for publicKey.
    */
   @java.lang.Override
@@ -119,11 +159,11 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int MESSAGE_HASH_FIELD_NUMBER = 3;
+  public static final int MESSAGE_HASH_FIELD_NUMBER = 4;
   @SuppressWarnings("serial")
   private volatile java.lang.Object messageHash_ = "";
   /**
-   * <code>string message_hash = 3;</code>
+   * <code>string message_hash = 4;</code>
    * @return The messageHash.
    */
   @java.lang.Override
@@ -140,7 +180,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string message_hash = 3;</code>
+   * <code>string message_hash = 4;</code>
    * @return The bytes for messageHash.
    */
   @java.lang.Override
@@ -175,11 +215,14 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(consumerToken_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, consumerToken_);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(type_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, type_);
+    }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(publicKey_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, publicKey_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, publicKey_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(messageHash_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, messageHash_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, messageHash_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -193,11 +236,14 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(consumerToken_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, consumerToken_);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(type_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, type_);
+    }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(publicKey_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, publicKey_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, publicKey_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(messageHash_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, messageHash_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, messageHash_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -216,6 +262,8 @@ private static final long serialVersionUID = 0L;
 
     if (!getConsumerToken()
         .equals(other.getConsumerToken())) return false;
+    if (!getType()
+        .equals(other.getType())) return false;
     if (!getPublicKey()
         .equals(other.getPublicKey())) return false;
     if (!getMessageHash()
@@ -233,6 +281,8 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + CONSUMER_TOKEN_FIELD_NUMBER;
     hash = (53 * hash) + getConsumerToken().hashCode();
+    hash = (37 * hash) + TYPE_FIELD_NUMBER;
+    hash = (53 * hash) + getType().hashCode();
     hash = (37 * hash) + PUBLIC_KEY_FIELD_NUMBER;
     hash = (53 * hash) + getPublicKey().hashCode();
     hash = (37 * hash) + MESSAGE_HASH_FIELD_NUMBER;
@@ -369,6 +419,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       bitField0_ = 0;
       consumerToken_ = "";
+      type_ = "";
       publicKey_ = "";
       messageHash_ = "";
       return this;
@@ -408,9 +459,12 @@ private static final long serialVersionUID = 0L;
         result.consumerToken_ = consumerToken_;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.publicKey_ = publicKey_;
+        result.type_ = type_;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.publicKey_ = publicKey_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
         result.messageHash_ = messageHash_;
       }
     }
@@ -464,14 +518,19 @@ private static final long serialVersionUID = 0L;
         bitField0_ |= 0x00000001;
         onChanged();
       }
+      if (!other.getType().isEmpty()) {
+        type_ = other.type_;
+        bitField0_ |= 0x00000002;
+        onChanged();
+      }
       if (!other.getPublicKey().isEmpty()) {
         publicKey_ = other.publicKey_;
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (!other.getMessageHash().isEmpty()) {
         messageHash_ = other.messageHash_;
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -506,15 +565,20 @@ private static final long serialVersionUID = 0L;
               break;
             } // case 10
             case 18: {
-              publicKey_ = input.readStringRequireUtf8();
+              type_ = input.readStringRequireUtf8();
               bitField0_ |= 0x00000002;
               break;
             } // case 18
             case 26: {
-              messageHash_ = input.readStringRequireUtf8();
+              publicKey_ = input.readStringRequireUtf8();
               bitField0_ |= 0x00000004;
               break;
             } // case 26
+            case 34: {
+              messageHash_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -604,9 +668,81 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private java.lang.Object type_ = "";
+    /**
+     * <code>string type = 2;</code>
+     * @return The type.
+     */
+    public java.lang.String getType() {
+      java.lang.Object ref = type_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        type_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string type = 2;</code>
+     * @return The bytes for type.
+     */
+    public com.google.protobuf.ByteString
+        getTypeBytes() {
+      java.lang.Object ref = type_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        type_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string type = 2;</code>
+     * @param value The type to set.
+     * @return This builder for chaining.
+     */
+    public Builder setType(
+        java.lang.String value) {
+      if (value == null) { throw new NullPointerException(); }
+      type_ = value;
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string type = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearType() {
+      type_ = getDefaultInstance().getType();
+      bitField0_ = (bitField0_ & ~0x00000002);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string type = 2;</code>
+     * @param value The bytes for type to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTypeBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
+      type_ = value;
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+
     private java.lang.Object publicKey_ = "";
     /**
-     * <code>string public_key = 2;</code>
+     * <code>string public_key = 3;</code>
      * @return The publicKey.
      */
     public java.lang.String getPublicKey() {
@@ -622,7 +758,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string public_key = 2;</code>
+     * <code>string public_key = 3;</code>
      * @return The bytes for publicKey.
      */
     public com.google.protobuf.ByteString
@@ -639,7 +775,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string public_key = 2;</code>
+     * <code>string public_key = 3;</code>
      * @param value The publicKey to set.
      * @return This builder for chaining.
      */
@@ -647,22 +783,22 @@ private static final long serialVersionUID = 0L;
         java.lang.String value) {
       if (value == null) { throw new NullPointerException(); }
       publicKey_ = value;
-      bitField0_ |= 0x00000002;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
     /**
-     * <code>string public_key = 2;</code>
+     * <code>string public_key = 3;</code>
      * @return This builder for chaining.
      */
     public Builder clearPublicKey() {
       publicKey_ = getDefaultInstance().getPublicKey();
-      bitField0_ = (bitField0_ & ~0x00000002);
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
     /**
-     * <code>string public_key = 2;</code>
+     * <code>string public_key = 3;</code>
      * @param value The bytes for publicKey to set.
      * @return This builder for chaining.
      */
@@ -671,14 +807,14 @@ private static final long serialVersionUID = 0L;
       if (value == null) { throw new NullPointerException(); }
       checkByteStringIsUtf8(value);
       publicKey_ = value;
-      bitField0_ |= 0x00000002;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
 
     private java.lang.Object messageHash_ = "";
     /**
-     * <code>string message_hash = 3;</code>
+     * <code>string message_hash = 4;</code>
      * @return The messageHash.
      */
     public java.lang.String getMessageHash() {
@@ -694,7 +830,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string message_hash = 3;</code>
+     * <code>string message_hash = 4;</code>
      * @return The bytes for messageHash.
      */
     public com.google.protobuf.ByteString
@@ -711,7 +847,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string message_hash = 3;</code>
+     * <code>string message_hash = 4;</code>
      * @param value The messageHash to set.
      * @return This builder for chaining.
      */
@@ -719,22 +855,22 @@ private static final long serialVersionUID = 0L;
         java.lang.String value) {
       if (value == null) { throw new NullPointerException(); }
       messageHash_ = value;
-      bitField0_ |= 0x00000004;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
     /**
-     * <code>string message_hash = 3;</code>
+     * <code>string message_hash = 4;</code>
      * @return This builder for chaining.
      */
     public Builder clearMessageHash() {
       messageHash_ = getDefaultInstance().getMessageHash();
-      bitField0_ = (bitField0_ & ~0x00000004);
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
     /**
-     * <code>string message_hash = 3;</code>
+     * <code>string message_hash = 4;</code>
      * @param value The bytes for messageHash to set.
      * @return This builder for chaining.
      */
@@ -743,7 +879,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) { throw new NullPointerException(); }
       checkByteStringIsUtf8(value);
       messageHash_ = value;
-      bitField0_ |= 0x00000004;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

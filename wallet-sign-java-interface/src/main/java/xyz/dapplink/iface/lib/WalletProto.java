@@ -68,20 +68,21 @@ public final class WalletProto {
       "\014\n\004type\030\002 \001(\t\022\016\n\006number\030\003 \001(\004\"d\n\027ExportP" +
       "ublicKeyResponse\022\014\n\004code\030\001 \001(\t\022\013\n\003msg\030\002 " +
       "\001(\t\022.\n\npublic_key\030\003 \003(\0132\032.dapplink.walle" +
-      "t.PublicKey\"X\n\024SignTxMessageRequest\022\026\n\016c" +
-      "onsumer_token\030\001 \001(\t\022\022\n\npublic_key\030\002 \001(\t\022" +
-      "\024\n\014message_hash\030\003 \001(\t\"E\n\025SignTxMessageRe" +
-      "sponse\022\014\n\004code\030\001 \001(\t\022\013\n\003msg\030\002 \001(\t\022\021\n\tsig" +
-      "nature\030\003 \001(\t2\305\002\n\rWalletService\022f\n\021getSup" +
-      "portSignWay\022&.dapplink.wallet.SupportSig" +
-      "nWayRequest\032\'.dapplink.wallet.SupportSig" +
-      "nWayResponse\"\000\022j\n\023exportPublicKeyList\022\'." +
-      "dapplink.wallet.ExportPublicKeyRequest\032(" +
-      ".dapplink.wallet.ExportPublicKeyResponse" +
-      "\"\000\022`\n\rsignTxMessage\022%.dapplink.wallet.Si" +
-      "gnTxMessageRequest\032&.dapplink.wallet.Sig" +
-      "nTxMessageResponse\"\000B\'\n\026xyz.dapplink.ifa" +
-      "ce.libB\013WalletProtoP\001b\006proto3"
+      "t.PublicKey\"f\n\024SignTxMessageRequest\022\026\n\016c" +
+      "onsumer_token\030\001 \001(\t\022\014\n\004type\030\002 \001(\t\022\022\n\npub" +
+      "lic_key\030\003 \001(\t\022\024\n\014message_hash\030\004 \001(\t\"E\n\025S" +
+      "ignTxMessageResponse\022\014\n\004code\030\001 \001(\t\022\013\n\003ms" +
+      "g\030\002 \001(\t\022\021\n\tsignature\030\003 \001(\t2\305\002\n\rWalletSer" +
+      "vice\022f\n\021getSupportSignWay\022&.dapplink.wal" +
+      "let.SupportSignWayRequest\032\'.dapplink.wal" +
+      "let.SupportSignWayResponse\"\000\022j\n\023exportPu" +
+      "blicKeyList\022\'.dapplink.wallet.ExportPubl" +
+      "icKeyRequest\032(.dapplink.wallet.ExportPub" +
+      "licKeyResponse\"\000\022`\n\rsignTxMessage\022%.dapp" +
+      "link.wallet.SignTxMessageRequest\032&.dappl" +
+      "ink.wallet.SignTxMessageResponse\"\000B\'\n\026xy" +
+      "z.dapplink.iface.libB\013WalletProtoP\001b\006pro" +
+      "to3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -122,7 +123,7 @@ public final class WalletProto {
     internal_static_dapplink_wallet_SignTxMessageRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_dapplink_wallet_SignTxMessageRequest_descriptor,
-        new java.lang.String[] { "ConsumerToken", "PublicKey", "MessageHash", });
+        new java.lang.String[] { "ConsumerToken", "Type", "PublicKey", "MessageHash", });
     internal_static_dapplink_wallet_SignTxMessageResponse_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_dapplink_wallet_SignTxMessageResponse_fieldAccessorTable = new

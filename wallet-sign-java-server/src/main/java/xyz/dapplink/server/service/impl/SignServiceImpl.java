@@ -72,10 +72,17 @@ public class SignServiceImpl implements ISignService {
     }
 
     @Override
-    public String sign(String publicKey, String msg) {
+    public String sign(String publicKey, String msg, SignType signType) {
         Assert.isTrue(msg.length() == 32, "invalid string length");
-        byte[] bytesPublicKey = dbService.getByPublicKey(HexStringUtils.hexStringToByteArray(publicKey));
-        Assert.notNull(bytesPublicKey, "empty result");
-        return null;
+        byte[] bytesPrivateKey = dbService.getByPublicKey(HexStringUtils.hexStringToByteArray(publicKey));
+        Assert.notNull(bytesPrivateKey, "empty result");
+        AlgorithmStrategy strategyService = algorithmService.getStrategy(signType);
+        String signature = "unknown error";
+        try {
+            signature = strategyService.sign(Arrays.toString(bytesPrivateKey), msg);
+        } catch (Exception e) {
+            log.error("sign error:{}", e.getMessage(), e);
+        }
+        return signature;
     }
 }

@@ -20,24 +20,36 @@ public interface SignTxMessageRequestOrBuilder extends
       getConsumerTokenBytes();
 
   /**
-   * <code>string public_key = 2;</code>
+   * <code>string type = 2;</code>
+   * @return The type.
+   */
+  java.lang.String getType();
+  /**
+   * <code>string type = 2;</code>
+   * @return The bytes for type.
+   */
+  com.google.protobuf.ByteString
+      getTypeBytes();
+
+  /**
+   * <code>string public_key = 3;</code>
    * @return The publicKey.
    */
   java.lang.String getPublicKey();
   /**
-   * <code>string public_key = 2;</code>
+   * <code>string public_key = 3;</code>
    * @return The bytes for publicKey.
    */
   com.google.protobuf.ByteString
       getPublicKeyBytes();
 
   /**
-   * <code>string message_hash = 3;</code>
+   * <code>string message_hash = 4;</code>
    * @return The messageHash.
    */
   java.lang.String getMessageHash();
   /**
-   * <code>string message_hash = 3;</code>
+   * <code>string message_hash = 4;</code>
    * @return The bytes for messageHash.
    */
   com.google.protobuf.ByteString
